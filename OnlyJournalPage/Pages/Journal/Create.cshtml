@@ -1,0 +1,36 @@
+﻿@page
+@model OnlyJournalPage.Pages.Journal.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Journal</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Journal.Markdown" class="control-label"></label>
+                <textarea asp-for="Journal.Markdown" class="form-control" style="resize: both; width: auto; min-width: 540px;"></textarea>
+                <span asp-validation-for="Journal.Markdown" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    
+}
