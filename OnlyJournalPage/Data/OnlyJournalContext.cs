@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OnlyJournal.Data.Journal;
+using OnlyJournal.Data.Habit;
+using OnlyJournalPage.Data.Todo;
 
 namespace OnlyJournalPage.Data
 {
@@ -22,5 +24,9 @@ namespace OnlyJournalPage.Data
 				.Property(x => x.Id)
 				.HasDefaultValue(0);
 		}
+
+		public DbSet<OnlyJournal.Data.Habit.HabitRecord> HabitRecord { get; set; }
+
+		public DbSet<OnlyJournalPage.Data.Todo.Todo> Todo { get; set; }
 	}
 }

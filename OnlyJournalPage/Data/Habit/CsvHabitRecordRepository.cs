@@ -16,14 +16,14 @@ namespace OnlyJournal.Data.Habit
 			this.filePath = option.FilePath;
 		}
 
-		public HabitRecord Get(string key)
+		public HabitRecord Get(string id)
 		{
 			if (cache is null)
 			{
 				LoadCache();
 			}
 
-			return cache.FirstOrDefault(x => x.Key == key);
+			return cache.FirstOrDefault(x => x.Id == id);
 		}
 
 		private void LoadCache()
@@ -40,7 +40,7 @@ namespace OnlyJournal.Data.Habit
 				LoadCache();
 			}
 
-			return cache.Select(x => new HabitArticle(x.Key) { Priority = 1000 }).ToArray();
+			return cache.Select(x => new HabitArticle(x.Id) { Priority = 1000 }).ToArray();
 		}
 	}
 }
