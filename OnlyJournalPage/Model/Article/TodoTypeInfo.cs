@@ -11,7 +11,7 @@ namespace OnlyJournalPage.Model.Article
 {
 	public class TodoTypeInfo : ArticleTypeInfo<Todo>
 	{
-		public TodoTypeInfo() : base(1, ArticleType.Todo, "/Todo")
+		public TodoTypeInfo() : base(1, ArticleType.Todo, "/Todo", 15000)
 		{
 		}
 

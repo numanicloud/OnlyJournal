@@ -3,14 +3,13 @@
 
 @Html.Raw(Model.ResultingHtml)
 
-
-@{
-}
-
 @section Scripts {
     <script type="text/javascript">
         setTimeout(function () {
             window.location.href = "@Url.Page("/Surfing")";
         }, 3000);
     </script>
+}
+@section Header {
+    <partial name="_TodoPartial" model="Model.ImportantTodo"/>
 }

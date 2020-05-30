@@ -11,7 +11,7 @@ namespace OnlyJournalPage.Model.Article
 {
 	public class HabitTypeInfo : ArticleTypeInfo<HabitRecord>
 	{
-		public HabitTypeInfo() : base(5, ArticleType.Habit, "/HabitRecord")
+		public HabitTypeInfo() : base(5, ArticleType.Habit, "/HabitRecord", 6000)
 		{
 		}
 

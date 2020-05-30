@@ -1,5 +1,8 @@
 ﻿@page
 @model OnlyJournalPage.Pages.HabitRecord.ArticleModel
+@{
+    Layout = "_SurfingLayout";
+}
 
 <div>
     <h2>@Model.Habit.Title</h2>
@@ -15,10 +18,14 @@
     </p>
 </div>
 
-@{
+@section Scripts {
     <script type="text/javascript">
         setTimeout(function () {
             window.location.href = "@Url.Page("/Surfing")";
         }, 3000);
     </script>
+}
+
+@section Header {
+    <partial name="_TodoPartial" model="Model.ImportantTodo" />
 }

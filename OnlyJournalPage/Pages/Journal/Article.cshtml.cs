@@ -7,22 +7,27 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using OnlyJournal.Data.Journal;
 using OnlyJournalPage.Data;
+using OnlyJournalPage.Model;
 
 namespace OnlyJournalPage.Pages.Journal
 {
     public class ArticleModel : PageModel
     {
 		private readonly OnlyJournalContext context;
+		private readonly TodoPartialViewModel todoPartial;
 
 		public ArticleModel(OnlyJournalContext context)
 		{
 			this.context = context;
+			this.todoPartial = new TodoPartialViewModel(context);
 		}
 
         [BindProperty]
         public string ResultingHtml { get; set; }
+		[BindProperty]
+		public Data.Todo.Todo ImportantTodo { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+		public async Task<IActionResult> OnGetAsync(int? id)
         {
 			if (id == null)
 			{
@@ -37,6 +42,7 @@ namespace OnlyJournalPage.Pages.Journal
 			}
 
 			ResultingHtml = JournalHelper.GetHtml(journal);
+			ImportantTodo = await todoPartial.GetImportantTodoAsync();
 
 			return Page();
         }

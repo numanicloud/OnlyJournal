@@ -11,7 +11,7 @@ namespace OnlyJournalPage.Model.Article
 {
 	public class JournalTypeInfo : ArticleTypeInfo<Journal>
 	{
-		public JournalTypeInfo() : base(4, ArticleType.Journal, "/Journal")
+		public JournalTypeInfo() : base(4, ArticleType.Journal, "/Journal", 15000)
 		{
 		}
 

@@ -13,6 +13,7 @@ namespace OnlyJournalPage.Model.Article
 		int TypeWeight { get; }
 		ArticleType Type { get; }
 		string PageDirectoryName { get; }
+		int TransitionMillisecond { get; }
 		int? GetAnyId(OnlyJournalContext context);
 	}
 
@@ -21,16 +22,19 @@ namespace OnlyJournalPage.Model.Article
 		public int TypeWeight { get; }
 		public ArticleType Type { get; }
 		public string PageDirectoryName { get; }
+		public int TransitionMillisecond { get; }
 
 		protected abstract DbSet<T> GetDB(OnlyJournalContext context);
 		protected abstract int SelectId(T entity);
 		protected abstract object SelectOrderKey(T entity);
 
-		public ArticleTypeInfo(int typeWeight, ArticleType type, string pageDirectoryName)
+		public ArticleTypeInfo(int typeWeight, ArticleType type, string pageDirectoryName,
+			int transitionMillisecond)
 		{
 			TypeWeight = typeWeight;
 			Type = type;
 			PageDirectoryName = pageDirectoryName;
+			TransitionMillisecond = transitionMillisecond;
 		}
 
 		public int? GetAnyId(OnlyJournalContext context)
