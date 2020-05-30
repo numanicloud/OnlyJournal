@@ -31,8 +31,11 @@ namespace OnlyJournalPage
 			services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
 				.AddNegotiate();
 
+			/*/
 		    services.AddDbContext<OnlyJournalContext>(options =>
 		            options.UseSqlServer(Configuration.GetConnectionString("OnlyJournalContext")));
+			//*/
+			services.AddDbContext<OnlyJournalContext>();
 
 			services.AddSingleton<ArticleRepository>();
 		}

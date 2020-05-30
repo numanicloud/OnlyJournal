@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OnlyJournal.Data.Habit;
+using OnlyJournal.Data.Journal;
 
 namespace OnlyJournalPage.Data
 {
@@ -9,9 +11,22 @@ namespace OnlyJournalPage.Data
 		{
 		}
 
-		public DbSet<OnlyJournal.Data.Journal.Journal> Journal { get; set; }
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		{
+			optionsBuilder.UseSqlite(@"Data Source=OnlyJournalDB.db");
+		}
 
-		public DbSet<OnlyJournal.Data.Habit.HabitRecord> HabitRecord { get; set; }
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<Journal>().ToTable("Journals");
+			modelBuilder.Entity<HabitRecord>().ToTable("Habits");
+			modelBuilder.Entity<Todo.Todo>().ToTable("Todo");
+			modelBuilder.Entity<Article.Article>().ToTable("Articles");
+		}
+
+		public DbSet<Journal> Journal { get; set; }
+
+		public DbSet<HabitRecord> HabitRecord { get; set; }
 
 		public DbSet<Todo.Todo> Todo { get; set; }
 
