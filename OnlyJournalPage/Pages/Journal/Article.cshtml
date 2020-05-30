@@ -1,15 +1,20 @@
 ﻿@page
 @model OnlyJournalPage.Pages.Journal.ArticleModel
 
-@Html.Raw(Model.ResultingHtml)
+<div class="card">
+    <div class="card-body">
+        @Html.Raw(Model.ResultingHtml)
+    </div>
+</div>
 
 @section Scripts {
     <script type="text/javascript">
         setTimeout(function () {
             window.location.href = "@Url.Page("/Surfing")";
-        }, 3000);
+        }, 15000);
     </script>
 }
+
 @section Header {
     <partial name="_TodoPartial" model="Model.ImportantTodo"/>
 }

@@ -11,5 +11,8 @@ namespace OnlyJournal.Data.Journal
 		[Required]
 		public string Markdown { get; set; }
 		public DateTime TimeCreated { get; set; }
+
+		[NotMapped]
+		public string MarkDownPreview { get; set; }
 	}
 }

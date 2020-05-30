@@ -30,6 +30,8 @@ namespace OnlyJournalPage.Pages.HabitRecord
 				return Page();
 			}
 
+			HabitRecord.SuccessCount = 0;
+
 			_context.HabitRecord.Add(HabitRecord);
 			await _context.SaveChangesAsync();
 

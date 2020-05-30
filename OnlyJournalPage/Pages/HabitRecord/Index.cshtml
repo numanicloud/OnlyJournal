@@ -1,5 +1,6 @@
 ﻿@page
 @model OnlyJournalPage.Pages.HabitRecord.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers 
 
 @{
     ViewData["Title"] = "Index";
@@ -19,6 +20,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.HabitRecord[(int)0].SuccessCount)
             </th>
+            <th>CountUp</th>
             <th></th>
         </tr>
     </thead>
@@ -30,6 +32,11 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SuccessCount)
+            </td>
+            <td>
+                <form method="post">
+                    <button type="submit" name="id" value="@item.Id">+</button>
+                </form>
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

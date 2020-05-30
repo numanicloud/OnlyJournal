@@ -12,12 +12,12 @@ namespace OnlyJournal.Data.Journal
 			private readonly string tagName;
 			private readonly StringBuilder builder;
 
-			public TagScope(string tagName, StringBuilder builder)
+			public TagScope(string tagName, StringBuilder builder, string attributes = "")
 			{
 				this.tagName = tagName;
 				this.builder = builder;
 
-				builder.AppendLine($"<{tagName}>");
+				builder.AppendLine($"<{tagName} {attributes}>");
 			}
 
 			public void Dispose()
@@ -35,7 +35,8 @@ namespace OnlyJournal.Data.Journal
 				builder = new StringBuilder();
 			}
 
-			public TagScope MakeScope(string tagName) => new TagScope(tagName, builder);
+			public TagScope MakeScope(string tagName, string attributes = "")
+				=> new TagScope(tagName, builder, attributes);
 
 			public StringBuilder AppendLine(string text) => builder.AppendLine(text);
 
@@ -54,7 +55,7 @@ namespace OnlyJournal.Data.Journal
 			{
 				var builder = new HtmlBuilder();
 
-				using var tableTag = builder.MakeScope("table");
+				var tableTag = builder.MakeScope("table", "class='table'");
 
 				{
 					using var theadTag = builder.MakeScope("thead");
@@ -84,6 +85,7 @@ namespace OnlyJournal.Data.Journal
 					}
 				}
 
+				tableTag.Dispose();
 				result = regex.Replace(result, builder.ToString());
 			}
 

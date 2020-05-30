@@ -19,11 +19,7 @@
                 <input asp-for="HabitRecord.Title" class="form-control" />
                 <span asp-validation-for="HabitRecord.Title" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="HabitRecord.SuccessCount" class="control-label"></label>
-                <input asp-for="HabitRecord.SuccessCount" class="form-control" />
-                <span asp-validation-for="HabitRecord.SuccessCount" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="HabitRecord.SuccessCount" />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
