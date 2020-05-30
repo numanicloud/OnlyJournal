@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OnlyJournal.Data.Article
+namespace OnlyJournalPage.Data.Article
 {
-	interface IArticleRepository
+	public enum ArticleType
 	{
-		IArticle GetNext();
+		Journal, Habit, Todo
 	}
 }

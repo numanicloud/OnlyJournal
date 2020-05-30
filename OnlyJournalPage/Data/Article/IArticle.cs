@@ -1,10 +1,14 @@
-﻿namespace OnlyJournal.Data.Article
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace OnlyJournal.Data.Article
 {
 	public interface IArticle
 	{
-		string LinkName { get; }
-		string Key { get; }
-		int Priority { get; }
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		int Id { get; }
+		int Type { get; }
+		int BasePriority { get; }
+		int PriorityDiff { get; }
 		void OnShown();
 	}
 }

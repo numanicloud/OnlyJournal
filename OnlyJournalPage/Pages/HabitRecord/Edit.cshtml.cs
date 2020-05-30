@@ -23,7 +23,7 @@ namespace OnlyJournalPage.Pages.HabitRecord
         [BindProperty]
         public OnlyJournal.Data.Habit.HabitRecord HabitRecord { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             if (id == null)
             {
@@ -69,7 +69,7 @@ namespace OnlyJournalPage.Pages.HabitRecord
             return RedirectToPage("./Index");
         }
 
-        private bool HabitRecordExists(string id)
+        private bool HabitRecordExists(int id)
         {
             return _context.HabitRecord.Any(e => e.Id == id);
         }

@@ -36,6 +36,8 @@ namespace OnlyJournalPage.Pages.Journal
                 return Page();
             }
 
+            Journal.TimeCreated = DateTime.Now;
+
             _context.Journal.Add(Journal);
             await _context.SaveChangesAsync();
 

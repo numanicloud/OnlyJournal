@@ -5,7 +5,7 @@ namespace OnlyJournal.Data.Habit
 	public class HabitRecord
 	{
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public string Id { get; set; }
+		public int Id { get; set; }
 		public string Title { get; set; }
 		public int SuccessCount { get; set; }
 	}

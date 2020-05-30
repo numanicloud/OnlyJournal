@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using OnlyJournalPage.Data;
 using Microsoft.AspNetCore.Authentication.Negotiate;
+using OnlyJournalPage.Model.Article;
 
 namespace OnlyJournalPage
 {
@@ -32,6 +33,8 @@ namespace OnlyJournalPage
 
 		    services.AddDbContext<OnlyJournalContext>(options =>
 		            options.UseSqlServer(Configuration.GetConnectionString("OnlyJournalContext")));
+
+			services.AddSingleton<ArticleRepository>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
