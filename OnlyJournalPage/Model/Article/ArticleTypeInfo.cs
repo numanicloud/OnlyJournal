@@ -36,7 +36,7 @@ namespace OnlyJournalPage.Model.Article
 		public int? GetAnyId(OnlyJournalContext context)
 		{
 			var entity = GetDB(context).AsEnumerable()
-				.Where(x => !context.Article.Any(y => y.ContentId == SelectId(x)))
+				.Where(x => !context.Article.Any(y => y.Type == (int)Type && y.ContentId == SelectId(x)))
 				.OrderByDescending(SelectOrderKey)
 				.FirstOrDefault();
 

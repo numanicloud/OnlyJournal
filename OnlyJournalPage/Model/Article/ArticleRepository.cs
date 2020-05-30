@@ -58,7 +58,7 @@ namespace OnlyJournalPage.Model.Article
 			ArticleData data = null;
 			if (instances.All(x => x.PriorityDiff < 0))
 			{
-				data = await context.Article.Where(x => x.Type == 0)
+				data = await context.Article.Where(x => x.Type != 2)
 					.Where(x => !instances.Contains(x))
 					.FirstOrDefaultAsync();
 
