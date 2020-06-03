@@ -13,6 +13,9 @@ using OnlyJournalPage.Data;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using OnlyJournalPage.Model.Article;
 
+using static Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders;
+using OnlyJournalPage.Model.Options;
+
 namespace OnlyJournalPage
 {
 	public class Startup
@@ -38,6 +41,7 @@ namespace OnlyJournalPage
 			services.AddDbContext<OnlyJournalContext>();
 
 			services.AddSingleton<ArticleRepository>();
+			services.Configure<ArticleOption>(Configuration);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,9 +58,14 @@ namespace OnlyJournalPage
 				app.UseHsts();
 			}
 
+			app.UseForwardedHeaders(new ForwardedHeadersOptions
+			{
+				ForwardedHeaders = XForwardedFor | XForwardedProto
+            });
+
 			app.UseAuthentication();
 
-			app.UseHttpsRedirection();
+			//app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
 			app.UseRouting();

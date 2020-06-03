@@ -1,0 +1,37 @@
+﻿@page
+@model OnlyJournalPage.Pages.Todo.ArticleModel
+@{
+    ViewData["Title"] = "Article";
+}
+
+<h1>TODO一覧</h1>
+
+<ul>
+    @foreach (var item in Model.Data)
+    {
+        <li>
+            @item.Title
+            @if (item.BeginTime != null || item.EndTime != null)
+            {
+                <text>[</text>
+                @(item.BeginTime?.ToString() ?? "*")
+                <text>,</text>
+                @(item.EndTime?.ToString() ?? "*")
+                <text>]</text>
+            }
+        </li>
+    }
+</ul>
+
+@section Scripts {
+    @if (Model.DoSurfing)
+    {
+        <script type="text/javascript">
+            registerArticleTimer(@Model.StaySeconds, $("#countdown"), "@Url.Page("/Surfing")");
+        </script>
+    }
+}
+
+@section Header {
+    <partial name="_TodoPartial" model="Model.ImportantTodo" />
+}

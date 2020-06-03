@@ -1,0 +1,22 @@
+﻿.markdown h1 {
+    background-color: rgba(168, 219, 168, 0.61);
+    padding: 0.2em;
+    vertical-align: middle;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.markdown h2 {
+    border-bottom: 1px solid rgba(168, 219, 168, 0.80);
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+}
+
+blockquote p {
+    background-color: #efefef;
+    padding: 0.5em;
+}
+
+body {
+    color: #757575;
+}

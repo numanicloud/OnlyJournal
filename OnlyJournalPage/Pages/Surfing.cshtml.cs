@@ -56,7 +56,7 @@ namespace OnlyJournalPage.Pages
 			{
 				ArticleType.Journal => (IArticleTypeInfo)journalType,
 				ArticleType.Habit => habitType,
-				ArticleType.Todo => todoType,
+				ArticleType.Todo => journalType,
 				_ => throw new Exception(),
 			};
 

@@ -5,29 +5,37 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using OnlyJournal.Data.Journal;
 using OnlyJournalPage.Data;
 using OnlyJournalPage.Model;
+using OnlyJournalPage.Model.Options;
 
 namespace OnlyJournalPage.Pages.Journal
 {
     public class ArticleModel : PageModel
     {
 		private readonly OnlyJournalContext context;
-		private readonly TodoPartialViewModel todoPartial;
+        private readonly IOptionsMonitor<ArticleOption> options;
+        private readonly TodoPartialViewModel todoPartial;
 
-		public ArticleModel(OnlyJournalContext context)
+		public ArticleModel(OnlyJournalContext context, IOptionsMonitor<ArticleOption> options)
 		{
 			this.context = context;
-			this.todoPartial = new TodoPartialViewModel(context);
+            this.options = options;
+            this.todoPartial = new TodoPartialViewModel(context);
 		}
 
         [BindProperty]
         public string ResultingHtml { get; set; }
 		[BindProperty]
 		public Data.Todo.Todo ImportantTodo { get; set; }
+		[BindProperty]
+        public bool DoSurfing { get; set; }
+		[BindProperty]
+        public int StaySeconds { get; set; }
 
-		public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? id, [FromQuery]bool surfing = true)
         {
 			if (id == null)
 			{
@@ -43,6 +51,8 @@ namespace OnlyJournalPage.Pages.Journal
 
 			ResultingHtml = JournalHelper.GetHtml(journal);
 			ImportantTodo = await todoPartial.GetImportantTodoAsync();
+			DoSurfing = surfing;
+			StaySeconds = options.CurrentValue.JournalStaySeconds;
 
 			return Page();
         }
