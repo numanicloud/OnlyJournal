@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using OnlyJournalPage.Data;
 using OnlyJournalPage.Data.Article;
+using OnlyJournalPage.Model.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +20,15 @@ namespace OnlyJournalPage.Model.Article
 
 		// DB内のオブジェクトではなく、そのクローンを溜めておく
 		private readonly List<ArticleData> instances = new List<ArticleData>();
+        private readonly IOptionsMonitor<ArticleOption> options;
 
-		public ArticleRepository()
+        public ArticleRepository(IOptionsMonitor<ArticleOption> options)
 		{
 			this.journalType = new JournalTypeInfo();
 			this.habitType = new HabitTypeInfo();
 			this.todoType = new TodoTypeInfo();
-		}
+            this.options = options;
+        }
 
 		public async Task<ArticleData> TryCreateArticleAsync(OnlyJournalContext context)
 		{
@@ -85,6 +89,8 @@ namespace OnlyJournalPage.Model.Article
 		private (ArticleType type, int id)? GetContentId(OnlyJournalContext context)
 		{
 			var info = new List<IArticleTypeInfo>() { journalType, habitType, todoType };
+			var option = options.CurrentValue;
+			var weights = new int[] { option.JournalWeight, option.HabitWeight, option.TodoWeight };
 
 			while (info.Any())
 			{
@@ -93,7 +99,7 @@ namespace OnlyJournalPage.Model.Article
 				for (int i = info.Count - 1; i >= 0; i--)
 				{
 					var p = info[i];
-					if (r <= p.TypeWeight + totalWeight)
+					if (r <= weights[i] + totalWeight)
 					{
 						if (p.GetAnyId(context) is int id)
 						{
@@ -104,6 +110,7 @@ namespace OnlyJournalPage.Model.Article
 							info.RemoveAt(i);
 						}
 					}
+					totalWeight += weights[i];
 				}
 			}
 			return null;
