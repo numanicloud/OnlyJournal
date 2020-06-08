@@ -37,6 +37,7 @@ namespace OnlyJournalPage.Pages.Journal
             Journal = await _context.Journal.FirstOrDefaultAsync(m => m.Id == id);
             var values = new[] { JournalCategory.Daily, JournalCategory.Honor, JournalCategory.Tech };
             Categories = values.Select(x => new SelectListItem(x.ToString(), x.ToString()));
+            Category = Journal.Category.ToString();
 
             if (Journal == null)
             {
@@ -55,6 +56,7 @@ namespace OnlyJournalPage.Pages.Journal
             }
 
             Journal.Category = (JournalCategory)Enum.Parse(typeof(JournalCategory), Category);
+            Journal.TimeCreated = DateTime.Now;
 
             _context.Attach(Journal).State = EntityState.Modified;
 

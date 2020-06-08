@@ -24,7 +24,7 @@ namespace OnlyJournalPage.Pages.Journal
             Journal = await _context.Journal.ToListAsync();
 			foreach (var item in Journal)
 			{
-                item.MarkDownPreview = item.Markdown.Substring(0, Math.Min(20, item.Markdown.Length));
+                item.MarkDownPreview = item.Markdown.Substring(0, Math.Min(40, item.Markdown.Length));
 			}
         }
     }

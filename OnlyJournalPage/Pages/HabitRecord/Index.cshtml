@@ -21,6 +21,9 @@
                 @Html.DisplayNameFor(model => model.HabitRecord[(int)0].SuccessCount)
             </th>
             <th>CountUp</th>
+            <th>
+                @Html.DisplayNameFor(model => model.HabitRecord[(int)0].IsCompleted)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -37,6 +40,9 @@
                 <form method="post">
                     <button type="submit" name="id" value="@item.Id">+</button>
                 </form>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCompleted)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
