@@ -6,6 +6,10 @@ namespace OnlyJournalPage.Data
 {
 	public class OnlyJournalContext : DbContext
 	{
+        public OnlyJournalContext()
+        {
+        }
+
 		public OnlyJournalContext (DbContextOptions<OnlyJournalContext> options)
 			: base(options)
 		{

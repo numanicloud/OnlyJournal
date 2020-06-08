@@ -7,20 +7,23 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using OnlyJournalPage.Data;
 using OnlyJournalPage.Data.Todo;
+using OnlyJournalPage.Model.Article;
 
 namespace OnlyJournalPage.Pages.Todo
 {
     public class DeleteModel : PageModel
     {
-        private readonly OnlyJournalPage.Data.OnlyJournalContext _context;
+        private readonly OnlyJournalContext _context;
+        private readonly IEnumerable<IArticleRepository> repositories;
 
-        public DeleteModel(OnlyJournalPage.Data.OnlyJournalContext context)
+        public DeleteModel(OnlyJournalContext context, IEnumerable<IArticleRepository> repositories)
         {
             _context = context;
+            this.repositories = repositories;
         }
 
         [BindProperty]
-        public OnlyJournalPage.Data.Todo.Todo Todo { get; set; }
+        public Data.Todo.Todo Todo { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -51,6 +54,11 @@ namespace OnlyJournalPage.Pages.Todo
             {
                 _context.Todo.Remove(Todo);
                 await _context.SaveChangesAsync();
+
+                foreach (var item in repositories)
+                {
+                    await item.OnRecordDeletedAsync(Data.Article.ArticleType.Todo, Todo.Id);
+                }
             }
 
             return RedirectToPage("./Index");

@@ -1,0 +1,30 @@
+﻿@page
+@model OnlyJournalPage.Pages.Todo.ListModel
+
+<div class="card">
+    <div class="card-body">
+        <h2>Todo-List</h2>
+        <ul>
+            @foreach (var item in Model.Todos)
+            {
+                <li>@item.Title</li>
+            }
+        </ul>
+    </div>
+    <div class="card-footer text-muted">
+        <p id="countdown">1000</p>
+    </div>
+</div>
+
+@section Scripts {
+    @if (Model.DoSurfing)
+    {
+<script type="text/javascript">
+        registerArticleTimer(@Model.StaySeconds, $("#countDown"), "@Url.Page("/Surfing")")
+</script>
+    }
+}
+
+@section Header {
+    <partial name="_TodoPartial" model="Model.ImportantTodo" />
+}

@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using OnlyJournal.Data.Journal;
 using OnlyJournalPage.Data;
+using OnlyJournalPage.Model.Article;
 
 namespace OnlyJournalPage.Pages.Journal
 {
     public class DeleteModel : PageModel
     {
-        private readonly OnlyJournalPage.Data.OnlyJournalContext _context;
+        private readonly OnlyJournalContext _context;
+        private readonly IEnumerable<IArticleRepository> repositories;
 
-        public DeleteModel(OnlyJournalPage.Data.OnlyJournalContext context)
+        public DeleteModel(OnlyJournalContext context, IEnumerable<IArticleRepository> repositories)
         {
             _context = context;
+            this.repositories = repositories;
         }
 
         [BindProperty]
@@ -51,6 +54,11 @@ namespace OnlyJournalPage.Pages.Journal
             {
                 _context.Journal.Remove(Journal);
                 await _context.SaveChangesAsync();
+
+                foreach (var item in repositories)
+                {
+                    await item.OnRecordDeletedAsync(Data.Article.ArticleType.Journal, Journal.Id);
+                }
             }
 
             return RedirectToPage("./Index");

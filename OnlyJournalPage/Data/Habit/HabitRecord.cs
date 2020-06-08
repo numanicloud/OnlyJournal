@@ -8,5 +8,6 @@ namespace OnlyJournal.Data.Habit
 		public int Id { get; set; }
 		public string Title { get; set; }
 		public int SuccessCount { get; set; }
-	}
+        public bool IsCompleted { get; set; }
+    }
 }

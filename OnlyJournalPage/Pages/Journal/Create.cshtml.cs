@@ -21,11 +21,17 @@ namespace OnlyJournalPage.Pages.Journal
 
         public IActionResult OnGet()
         {
+            var values = new[] { JournalCategory.Daily, JournalCategory.Honor, JournalCategory.Tech };
+            Categories = values.Select(x => new SelectListItem(x.ToString(), x.ToString()));
             return Page();
         }
 
         [BindProperty]
         public OnlyJournal.Data.Journal.Journal Journal { get; set; }
+        [BindProperty]
+        public IEnumerable<SelectListItem> Categories { get; private set; }
+        [BindProperty]
+        public string Category { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -37,6 +43,7 @@ namespace OnlyJournalPage.Pages.Journal
             }
 
             Journal.TimeCreated = DateTime.Now;
+            Journal.Category = (JournalCategory)Enum.Parse(typeof(JournalCategory), Category);
 
             _context.Journal.Add(Journal);
             await _context.SaveChangesAsync();

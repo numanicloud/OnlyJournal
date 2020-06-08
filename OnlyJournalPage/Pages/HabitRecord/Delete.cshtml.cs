@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using OnlyJournal.Data.Habit;
 using OnlyJournalPage.Data;
+using OnlyJournalPage.Model.Article;
 
 namespace OnlyJournalPage.Pages.HabitRecord
 {
     public class DeleteModel : PageModel
     {
-        private readonly OnlyJournalPage.Data.OnlyJournalContext _context;
+        private readonly OnlyJournalContext _context;
+        private readonly IEnumerable<IArticleRepository> repositories;
 
-        public DeleteModel(OnlyJournalPage.Data.OnlyJournalContext context)
+        public DeleteModel(OnlyJournalContext context, IEnumerable<IArticleRepository> repositories)
         {
             _context = context;
+            this.repositories = repositories;
         }
 
         [BindProperty]
@@ -51,6 +54,11 @@ namespace OnlyJournalPage.Pages.HabitRecord
             {
                 _context.HabitRecord.Remove(HabitRecord);
                 await _context.SaveChangesAsync();
+
+                foreach (var item in repositories)
+                {
+                    await item.OnRecordDeletedAsync(Data.Article.ArticleType.Habit, HabitRecord.Id);
+                }
             }
 
             return RedirectToPage("./Index");

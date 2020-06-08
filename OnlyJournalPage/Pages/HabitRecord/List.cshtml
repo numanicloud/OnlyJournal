@@ -1,0 +1,40 @@
+﻿@page
+@model OnlyJournalPage.Pages.HabitRecord.ListModel
+
+<div class="card">
+    <div class="card-body">
+        @if (Model.IsCompletedHabits)
+        {
+            <h2>Completed Habits</h2>
+        }
+        else
+        {
+            <h2>Habits</h2>
+        }
+        <p>
+            <ul>
+                @foreach (var item in Model.Habits)
+                {
+                    <li>@item.Title (@item.SuccessCount)</li>
+                }
+            </ul>
+        </p>
+    </div>
+    <div class="card-footer text-muted">
+        <p id="countdown">1000</p>
+    </div>
+</div>
+
+
+@section Scripts {
+    @if (Model.DoSurfing)
+    {
+        <script type="text/javascript">
+        registerArticleTimer(@Model.StaySeconds, $("#countDown"), "@Url.Page("/Surfing")")
+        </script>
+    }
+}
+
+@section Header {
+    <partial name="_TodoPartial" model="Model.ImportantTodo" />
+}

@@ -22,6 +22,10 @@ namespace OnlyJournalPage.Pages.Journal
 
         [BindProperty]
         public OnlyJournal.Data.Journal.Journal Journal { get; set; }
+        [BindProperty]
+        public IEnumerable<SelectListItem> Categories { get; set; }
+        [BindProperty]
+        public string Category { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -31,6 +35,8 @@ namespace OnlyJournalPage.Pages.Journal
             }
 
             Journal = await _context.Journal.FirstOrDefaultAsync(m => m.Id == id);
+            var values = new[] { JournalCategory.Daily, JournalCategory.Honor, JournalCategory.Tech };
+            Categories = values.Select(x => new SelectListItem(x.ToString(), x.ToString()));
 
             if (Journal == null)
             {
@@ -47,6 +53,8 @@ namespace OnlyJournalPage.Pages.Journal
             {
                 return Page();
             }
+
+            Journal.Category = (JournalCategory)Enum.Parse(typeof(JournalCategory), Category);
 
             _context.Attach(Journal).State = EntityState.Modified;
 
