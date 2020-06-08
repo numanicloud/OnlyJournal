@@ -2,6 +2,7 @@
 using OnlyJournal.Data.Journal;
 using OnlyJournalPage.Data;
 using OnlyJournalPage.Model.Article;
+using OnlyJournalPage.Model.SaveData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,16 +12,17 @@ namespace OnlyJournalPage.Model.Journals
 {
     public class HonorJournalArticleRepository : ArrayListArticleRepositoryBase<Journal, JournalArticle>
     {
+        public HonorJournalArticleRepository(ISaveDataRepository save) : base(save)
+        {
+        }
+
         protected override IEnumerable<JournalArticle> CreateContents(OnlyJournalContext context)
         {
-            var random = new Random();
             return context.Journal.Where(x => x.Category == JournalCategory.Honor)
-                .OrderBy(x => random.Next())
+                .OrderBy(x => GetRandom())
                 .Select(x => new JournalArticle(x));
         }
 
-        protected override DbSet<Journal> GetDB(OnlyJournalContext context) => context.Journal;
-
-        protected override int GetId(JournalArticle item) => item.Data.Id;
+        protected override string GetKey() => $"Honor";
     }
 }

@@ -17,15 +17,17 @@ namespace OnlyJournalPage.Pages
     public class SurfingModel : PageModel
     {
         private readonly ISurfingRepository repository;
+        private readonly OnlyJournalContext context;
 
-        public SurfingModel(ISurfingRepository repository)
+        public SurfingModel(ISurfingRepository repository, OnlyJournalContext context)
         {
             this.repository = repository;
+            this.context = context;
         }
 
         public IActionResult OnGet()
 		{
-			var (page, query) = repository.GetNextPage();
+			var (page, query) = repository.GetNextPage(context);
 			return RedirectToPage(page, query);
 		}
     }

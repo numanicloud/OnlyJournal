@@ -19,6 +19,8 @@ using OnlyJournalPage.Model.Surfing;
 using OnlyJournalPage.Model.Journals;
 using OnlyJournalPage.Model.Habits;
 using OnlyJournalPage.Model.Todos;
+using OnlyJournalPage.Model.SaveData;
+using OnlyJournalPage.Model;
 
 namespace OnlyJournalPage
 {
@@ -47,14 +49,16 @@ namespace OnlyJournalPage
             services.AddSingleton<ArticleRepository>();
             services.Configure<ArticleOption>(Configuration);
 
-            services.AddSingleton<ISurfingRepository, SurfingRepository>();
-            services.AddSingleton<IArticleRepository, DailyJournalArticleRepository>();
-            services.AddSingleton<IArticleRepository, HonorJournalArticleRepository>();
-            services.AddSingleton<IArticleRepository, TechJournalArticleRepository>();
-            services.AddSingleton<IArticleRepository, GeneralHabitArticleRepository>();
-            services.AddSingleton<IArticleRepository, HabitListArticleRepository>();
-            services.AddSingleton<IArticleRepository, CompletedHabitArticleRepository>();
-            services.AddSingleton<IArticleRepository, TodoArticleRepository>();
+            services.AddScoped<ISaveDataRepository, SaveDataRepository>();
+            services.AddArticleRepo<DailyJournalArticleRepository>();
+            services.AddArticleRepo<HonorJournalArticleRepository>();
+            services.AddArticleRepo<TechJournalArticleRepository>();
+            services.AddArticleRepo<GeneralHabitArticleRepository>();
+            services.AddArticleRepo<HabitListArticleRepository>();
+            services.AddArticleRepo<CompletedHabitArticleRepository>();
+            services.AddArticleRepo<TodoArticleRepository>();
+            services.AddScoped<ArticleRepositoryStore>();
+            services.AddScoped<ISurfingRepository, SurfingRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

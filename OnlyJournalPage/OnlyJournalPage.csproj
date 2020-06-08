@@ -10,8 +10,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200608072810_OnlyJournalContext.cs" />
+    <Compile Remove="Migrations\20200608072810_OnlyJournalContext.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CsvHelper" Version="15.0.5" />
     <PackageReference Include="Markdown" Version="2.2.1" />
+    <PackageReference Include="MessagePack" Version="2.1.115" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.HttpOverrides" Version="2.2.0" />

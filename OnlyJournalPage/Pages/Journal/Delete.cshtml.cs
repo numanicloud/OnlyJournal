@@ -14,12 +14,10 @@ namespace OnlyJournalPage.Pages.Journal
     public class DeleteModel : PageModel
     {
         private readonly OnlyJournalContext _context;
-        private readonly IEnumerable<IArticleRepository> repositories;
 
-        public DeleteModel(OnlyJournalContext context, IEnumerable<IArticleRepository> repositories)
+        public DeleteModel(OnlyJournalContext context)
         {
             _context = context;
-            this.repositories = repositories;
         }
 
         [BindProperty]
@@ -54,11 +52,6 @@ namespace OnlyJournalPage.Pages.Journal
             {
                 _context.Journal.Remove(Journal);
                 await _context.SaveChangesAsync();
-
-                foreach (var item in repositories)
-                {
-                    await item.OnRecordDeletedAsync(Data.Article.ArticleType.Journal, Journal.Id);
-                }
             }
 
             return RedirectToPage("./Index");

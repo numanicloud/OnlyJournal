@@ -2,6 +2,7 @@
 using OnlyJournal.Data.Habit;
 using OnlyJournalPage.Data;
 using OnlyJournalPage.Model.Article;
+using OnlyJournalPage.Model.SaveData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,16 +12,17 @@ namespace OnlyJournalPage.Model.Habits
 {
     public class GeneralHabitArticleRepository : ArrayListArticleRepositoryBase<HabitRecord, HabitArticle>
     {
+        public GeneralHabitArticleRepository(ISaveDataRepository save) : base(save)
+        {
+        }
+
         protected override IEnumerable<HabitArticle> CreateContents(OnlyJournalContext context)
         {
-            var random = new Random();
             return context.HabitRecord.Where(x => !x.IsCompleted)
-                .OrderBy(x => random.Next())
+                .OrderBy(x => GetRandom())
                 .Select(x => new HabitArticle(x));
         }
 
-        protected override DbSet<HabitRecord> GetDB(OnlyJournalContext context) => context.HabitRecord;
-
-        protected override int GetId(HabitArticle item) => item.Data.Id;
+        protected override string GetKey() => "GeneralHabit";
     }
 }

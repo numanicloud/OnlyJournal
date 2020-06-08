@@ -10,18 +10,9 @@ namespace OnlyJournalPage.Model.Todos
 {
     public class TodoArticleRepository : IArticleRepository
     {
-        public IArticle GetNextArticle()
+        public IArticle GetNextArticle(OnlyJournalContext context)
         {
             return new TodoArticle();
-        }
-
-        public void Initialize(OnlyJournalContext context)
-        {
-        }
-
-        public async Task OnRecordDeletedAsync(ArticleType type, int id)
-        {
-            // Do nothing
         }
     }
 }

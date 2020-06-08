@@ -10,21 +10,9 @@ namespace OnlyJournalPage.Model.Habits
 {
     public class HabitListArticleRepository : IArticleRepository
     {
-        private HabitListArticle article;
-
-        public async Task OnRecordDeletedAsync(ArticleType type, int id)
+        public IArticle GetNextArticle(OnlyJournalContext context)
         {
-            // Do nothing
-        }
-
-        public IArticle GetNextArticle()
-        {
-            return article;
-        }
-
-        public void Initialize(OnlyJournalContext context)
-        {
-            article = new HabitListArticle(false);
+            return new HabitListArticle(false);
         }
     }
 }

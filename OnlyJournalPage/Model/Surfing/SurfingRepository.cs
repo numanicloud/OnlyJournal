@@ -2,6 +2,7 @@
 using OnlyJournalPage.Model.Article;
 using OnlyJournalPage.Model.Habits;
 using OnlyJournalPage.Model.Journals;
+using OnlyJournalPage.Model.SaveData;
 using OnlyJournalPage.Model.Todos;
 using System;
 using System.Collections.Generic;
@@ -12,37 +13,36 @@ namespace OnlyJournalPage.Model.Surfing
 {
     public class SurfingRepository : ISurfingRepository
     {
-        private IEnumerator<IArticleRepository> sequence;
+        private readonly ArticleRepositoryStore repos;
+        private readonly ISaveDataRepository save;
 
-        public SurfingRepository(OnlyJournalContext context)
+        public SurfingRepository(ArticleRepositoryStore repos, ISaveDataRepository save)
         {
-            sequence = GetArticleRepositories(context).GetEnumerator();
+            this.repos = repos;
+            this.save = save;
         }
 
-        public (string path, object queryString) GetNextPage()
+        public (string path, object queryString) GetNextPage(OnlyJournalContext context)
         {
-            sequence.MoveNext();
-            var current = sequence.Current.GetNextArticle();
+            var surfingSave = save.GetSurfingState();
+            var index = surfingSave.GlobalProgress;
+
+            var current = GetArticleRepositories(context).ElementAt(index).GetNextArticle(context);
             return (current.GetPagePath(), current.GetQueryString());
         }
 
         private IEnumerable<IArticleRepository> GetArticleRepositories(OnlyJournalContext context)
         {
-            var daily = new DailyJournalArticleRepository();
-            var honor = new HonorJournalArticleRepository();
-            var tech = new TechJournalArticleRepository();
-            var habit = new GeneralHabitArticleRepository();
-            var completed = new CompletedHabitArticleRepository();
-            var habitList = new HabitListArticleRepository();
-            var todo = new TodoArticleRepository();
+            var data = save.GetSurfingState();
+            if (!data.RandomSeed.ContainsKey("Surfing"))
+            {
+                data.RandomSeed["Surfing"] = DateTime.Now.GetHashCode();
+                save.Save();
+            }
+            var random = new Random(data.RandomSeed["Surfing"]);
+
             var journalSequence = GetNextJournal().GetEnumerator();
             var habitSequence = GetNextHabit().GetEnumerator();
-
-            var repos = new IArticleRepository[] { daily, honor, tech, habit, completed, habitList, todo };
-            foreach (var item in repos)
-            {
-                item.Initialize(context);
-            }
 
             while (true)
             {
@@ -54,27 +54,26 @@ namespace OnlyJournalPage.Model.Surfing
                     habitSequence.MoveNext();
                     yield return habitSequence.Current;
                 }
-                yield return todo;
+                yield return repos.Todo;
             }
 
             IEnumerable<IArticleRepository> GetNextJournal()
             {
                 var densities = new[]
                 {
-                    MathF.Sqrt(daily.ArticleAmount),
-                    MathF.Sqrt(honor.ArticleAmount),
-                    MathF.Sqrt(tech.ArticleAmount),
+                    MathF.Sqrt(repos.DailyJournal.GetCount(context)),
+                    MathF.Sqrt(repos.HonorJournal.GetCount(context)),
+                    MathF.Sqrt(repos.TechJournal.GetCount(context)),
                 };
-                var random = new Random();
 
                 while (true)
                 {
                     var index = Helper.GetRandomIndex(densities, random);
                     yield return index switch
                     {
-                        0 => daily,
-                        1 => honor,
-                        _ => tech,
+                        0 => repos.DailyJournal,
+                        1 => repos.HonorJournal,
+                        _ => repos.TechJournal,
                     };
                 }
             }
@@ -83,12 +82,13 @@ namespace OnlyJournalPage.Model.Surfing
             {
                 while (true)
                 {
-                    for (int i = 0; i < habit.ArticleAmount; i++)
+                    var count = repos.GeneralHabit.GetCount(context);
+                    for (int i = 0; i < count; i++)
                     {
-                        yield return habit;
+                        yield return repos.GeneralHabit;
                     }
-                    yield return habitList;
-                    yield return completed;
+                    yield return repos.HabitList;
+                    yield return repos.CompletedHabit;
                 }
             }
         }

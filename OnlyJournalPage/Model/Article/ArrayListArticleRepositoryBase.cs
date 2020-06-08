@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlyJournalPage.Data;
 using OnlyJournalPage.Data.Article;
+using OnlyJournalPage.Data.Surfing;
+using OnlyJournalPage.Model.SaveData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,36 +14,61 @@ namespace OnlyJournalPage.Model.Article
         where TEntity : class
         where TArticle : class, IArticle
     {
-        private List<TArticle> contents;
-        private int currentIndex = 0;
+        private readonly ISaveDataRepository _save;
+        private IEnumerable<IArticle> cache = null;
 
-        public int ArticleAmount => contents.Count;
+        protected Random Random { get; private set; }
 
-        public void Initialize(OnlyJournalContext context)
+        public ArrayListArticleRepositoryBase(ISaveDataRepository save)
         {
-            contents = new List<TArticle>(CreateContents(context));
+            this._save = save;
         }
 
-        public async Task OnRecordDeletedAsync(ArticleType type, int id)
+        public int GetCount(OnlyJournalContext context)
         {
-            var article = contents.FirstOrDefault(x => GetId(x) == id);
-            contents.Remove(article);
+            cache = cache ?? CreateContents(context);
+            return cache.Count();
         }
 
-        public IArticle GetNextArticle()
+        public IArticle GetNextArticle(OnlyJournalContext context)
         {
-            if (!contents.Any())
+            cache = cache ?? CreateContents(context);
+            var contents = cache;
+            var count = contents.Count();
+
+            if (count == 0)
             {
                 return null;
             }
 
-            var next = contents[currentIndex];
-            currentIndex = (currentIndex + 1) % contents.Count;
+            var surfingSave = _save.GetSurfingState();
+            var index = surfingSave.Progresses[GetKey()] % count;
+            var next = contents.ElementAt(index);
+
+            surfingSave.Progresses[GetKey()] = index + 1;
+            _save.Save();
+
             return next;
         }
 
+        protected int GetRandom()
+        {
+            if (Random == null)
+            {
+                var data = _save.GetSurfingState();
+                if (!data.RandomSeed.ContainsKey(GetKey()))
+                {
+                    data.RandomSeed[GetKey()] = DateTime.Now.GetHashCode();
+                    _save.Save();
+                }
+                   
+                Random = new Random(data.RandomSeed[GetKey()]);
+            }
+
+            return Random.Next();
+        }
+
         protected abstract IEnumerable<TArticle> CreateContents(OnlyJournalContext context);
-        protected abstract DbSet<TEntity> GetDB(OnlyJournalContext context);
-        protected abstract int GetId(TArticle item);
+        protected abstract string GetKey();
     }
 }

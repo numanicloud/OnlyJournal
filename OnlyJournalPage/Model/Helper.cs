@@ -23,5 +23,12 @@ namespace OnlyJournalPage.Model
             }
             return densities.Length - 1;
         }
+
+        public static IServiceCollection AddArticleRepo<T>(this IServiceCollection services)
+            where T : class, IArticleRepository
+        {
+            return services.AddScoped<IArticleRepository, T>()
+                .AddScoped<T>();
+        }
     }
 }

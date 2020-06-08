@@ -9,8 +9,6 @@ namespace OnlyJournalPage.Model.Article
 {
     public interface IArticleRepository
     {
-        void Initialize(OnlyJournalContext context);
-        IArticle GetNextArticle();
-        Task OnRecordDeletedAsync(ArticleType type, int id);
+        IArticle GetNextArticle(OnlyJournalContext context);
     }
 }
