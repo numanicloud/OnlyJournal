@@ -16,8 +16,8 @@ namespace OnlyJournalPage.Model.Habits
 
         public HabitRecord Data { get; }
 
-        public string GetPagePath() => "/Habit/Article";
+        public string GetPagePath() => "/HabitRecord/Article";
 
-        public string GetQueryString() => $"?id={Data.Id}";
+        public object GetQueryValue() => new { id = Data.Id };
     }
 }

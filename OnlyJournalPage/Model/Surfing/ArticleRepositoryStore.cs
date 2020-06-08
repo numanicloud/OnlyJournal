@@ -1,5 +1,6 @@
 ﻿using OnlyJournalPage.Model.Habits;
 using OnlyJournalPage.Model.Journals;
+using OnlyJournalPage.Model.Surfing;
 using OnlyJournalPage.Model.Todos;
 using System;
 using System.Collections.Generic;
@@ -8,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace OnlyJournalPage.Model.Article
 {
-    public class ArticleRepositoryStore
+    public class ArticleRepositoryStore : IArticleRepositoryStore
     {
-        public DailyJournalArticleRepository DailyJournal { get; }
-        public HonorJournalArticleRepository HonorJournal { get; }
-        public TechJournalArticleRepository TechJournal { get; }
-        public GeneralHabitArticleRepository GeneralHabit { get; }
-        public HabitListArticleRepository HabitList { get; }
-        public CompletedHabitArticleRepository CompletedHabit { get; }
-        public TodoArticleRepository Todo { get; }
+        public IArticleRepository DailyJournal { get; }
+        public IArticleRepository HonorJournal { get; }
+        public IArticleRepository TechJournal { get; }
+        public IArticleRepository GeneralHabit { get; }
+        public IArticleRepository HabitList { get; }
+        public IArticleRepository CompletedHabit { get; }
+        public IArticleRepository Todo { get; }
 
         public IEnumerable<IArticleRepository> Repositories => new IArticleRepository[]
         {

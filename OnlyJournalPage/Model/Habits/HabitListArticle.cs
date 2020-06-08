@@ -16,8 +16,8 @@ namespace OnlyJournalPage.Model.Habits
             this.isCompleted = isCompleted;
         }
 
-        public string GetPagePath() => $"/Habit/List";
+        public string GetPagePath() => $"/HabitRecord/List";
 
-        public string GetQueryString() => $"?isCompleted={isCompleted}";
+        public object GetQueryValue() => new { isCompleted };
     }
 }

@@ -10,6 +10,6 @@ namespace OnlyJournalPage.Model.Todos
     {
         public string GetPagePath() => $"/Todo/List";
 
-        public string GetQueryString() => "";
+        public object GetQueryValue() => null;
     }
 }

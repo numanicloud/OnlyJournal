@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlyJournal.Data.Journal;
 using OnlyJournalPage.Data;
+using OnlyJournalPage.Data.Common;
 using OnlyJournalPage.Model.Article;
+using OnlyJournalPage.Model.Common;
 using OnlyJournalPage.Model.SaveData;
 using System;
 using System.Collections.Generic;
@@ -12,13 +14,13 @@ namespace OnlyJournalPage.Model.Journals
 {
     public class DailyJournalArticleRepository : ArrayListArticleRepositoryBase<Journal, JournalArticle>
     {
-        public DailyJournalArticleRepository(ISaveDataRepository save) : base(save)
+        public DailyJournalArticleRepository(ISaveDataRepository save, IRandomValueSource random) : base(save, random)
         {
         }
 
-        protected override IEnumerable<JournalArticle> CreateContents(OnlyJournalContext context)
+        protected override IEnumerable<JournalArticle> CreateContents(IContentsContext context)
         {
-            return context.Journal.Where(x => x.Category == OnlyJournal.Data.Journal.JournalCategory.Daily)
+            return context.Journals.GetAll().Where(x => x.Category == JournalCategory.Daily)
                 .OrderByDescending(x => x.TimeCreated)
                 .Select(x => new JournalArticle(x));
         }

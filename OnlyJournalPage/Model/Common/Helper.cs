@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OnlyJournalPage.Model.Article;
+using OnlyJournalPage.Model.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace OnlyJournalPage.Model
 {
     public static class Helper
     {
-        public static int GetRandomIndex(float[] densities, Random random = null)
+        public static int GetRandomIndex(float[] densities, IRandomValueSource random)
         {
             var currentDensity = 0.0f;
-            var rand = (float)random.NextDouble() * densities.Sum();
+            var rand = random.NextFloat(0, densities.Sum());
             for (int i = 0; i < densities.Length; i++)
             {
                 if (currentDensity <= rand && rand < densities[i])

@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlyJournalPage.Data;
 using OnlyJournalPage.Data.Article;
+using OnlyJournalPage.Data.Common;
 using OnlyJournalPage.Data.Surfing;
+using OnlyJournalPage.Model.Common;
 using OnlyJournalPage.Model.SaveData;
 using System;
 using System.Collections.Generic;
@@ -17,20 +19,21 @@ namespace OnlyJournalPage.Model.Article
         private readonly ISaveDataRepository _save;
         private IEnumerable<IArticle> cache = null;
 
-        protected Random Random { get; private set; }
+        protected IRandomValueSource Random { get; }
 
-        public ArrayListArticleRepositoryBase(ISaveDataRepository save)
+        public ArrayListArticleRepositoryBase(ISaveDataRepository save, IRandomValueSource random)
         {
             this._save = save;
+            this.Random = random;
         }
 
-        public int GetCount(OnlyJournalContext context)
+        public int GetCount(IContentsContext context)
         {
             cache = cache ?? CreateContents(context);
             return cache.Count();
         }
 
-        public IArticle GetNextArticle(OnlyJournalContext context)
+        public IArticle GetNextArticle(IContentsContext context)
         {
             cache = cache ?? CreateContents(context);
             var contents = cache;
@@ -42,6 +45,8 @@ namespace OnlyJournalPage.Model.Article
             }
 
             var surfingSave = _save.GetSurfingState();
+            EnsureProgressKey(surfingSave);
+
             var index = surfingSave.Progresses[GetKey()] % count;
             var next = contents.ElementAt(index);
 
@@ -51,24 +56,16 @@ namespace OnlyJournalPage.Model.Article
             return next;
         }
 
-        protected int GetRandom()
+        private void EnsureProgressKey(SurfingState surfingSave)
         {
-            if (Random == null)
+            if (!surfingSave.Progresses.ContainsKey(GetKey()))
             {
-                var data = _save.GetSurfingState();
-                if (!data.RandomSeed.ContainsKey(GetKey()))
-                {
-                    data.RandomSeed[GetKey()] = DateTime.Now.GetHashCode();
-                    _save.Save();
-                }
-                   
-                Random = new Random(data.RandomSeed[GetKey()]);
+                surfingSave.Progresses[GetKey()] = 0;
+                _save.Save();
             }
-
-            return Random.Next();
         }
 
-        protected abstract IEnumerable<TArticle> CreateContents(OnlyJournalContext context);
+        protected abstract IEnumerable<TArticle> CreateContents(IContentsContext context);
         protected abstract string GetKey();
     }
 }

@@ -11,7 +11,7 @@ namespace OnlyJournalPage.Data.Surfing
     public class SurfingState
     {
         [Key(0)]
-        public int GlobalProgress { get; set; }
+        public int GlobalProgress { get; set; } = 0;
         [Key(1)]
         public Dictionary<string, int> Progresses { get; } = new Dictionary<string, int>();
         [Key(2)]

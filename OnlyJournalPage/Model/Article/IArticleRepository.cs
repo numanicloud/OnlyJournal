@@ -1,5 +1,6 @@
 ﻿using OnlyJournalPage.Data;
 using OnlyJournalPage.Data.Article;
+using OnlyJournalPage.Data.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace OnlyJournalPage.Model.Article
 {
     public interface IArticleRepository
     {
-        IArticle GetNextArticle(OnlyJournalContext context);
+        int GetCount(IContentsContext context);
+        IArticle GetNextArticle(IContentsContext context);
     }
 }

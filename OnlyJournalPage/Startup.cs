@@ -21,6 +21,8 @@ using OnlyJournalPage.Model.Habits;
 using OnlyJournalPage.Model.Todos;
 using OnlyJournalPage.Model.SaveData;
 using OnlyJournalPage.Model;
+using OnlyJournalPage.Model.Common;
+using OnlyJournalPage.Data.Common;
 
 namespace OnlyJournalPage
 {
@@ -49,7 +51,7 @@ namespace OnlyJournalPage
             services.AddSingleton<ArticleRepository>();
             services.Configure<ArticleOption>(Configuration);
 
-            services.AddScoped<ISaveDataRepository, SaveDataRepository>();
+            services.AddSingleton<ISaveDataRepository, SaveDataRepository>();
             services.AddArticleRepo<DailyJournalArticleRepository>();
             services.AddArticleRepo<HonorJournalArticleRepository>();
             services.AddArticleRepo<TechJournalArticleRepository>();
@@ -57,8 +59,10 @@ namespace OnlyJournalPage
             services.AddArticleRepo<HabitListArticleRepository>();
             services.AddArticleRepo<CompletedHabitArticleRepository>();
             services.AddArticleRepo<TodoArticleRepository>();
-            services.AddScoped<ArticleRepositoryStore>();
+            services.AddScoped<IArticleRepositoryStore, ArticleRepositoryStore>();
             services.AddScoped<ISurfingRepository, SurfingRepository>();
+            services.AddSingleton<IRandomValueSource, SystemRandomValueSource>();
+            services.AddScoped<IContentsContext, OnlyJournalContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

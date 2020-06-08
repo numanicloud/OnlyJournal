@@ -3,6 +3,6 @@
     public interface IArticle
     {
         string GetPagePath();
-        string GetQueryString();
+        object GetQueryValue();
     }
 }

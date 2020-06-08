@@ -1,4 +1,5 @@
 ﻿using OnlyJournalPage.Data;
+using OnlyJournalPage.Data.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,6 @@ namespace OnlyJournalPage.Model.Surfing
 {
     public interface ISurfingRepository
     {
-        (string path, object queryString) GetNextPage(OnlyJournalContext context);
+        (string path, object queryString) GetNextPage();
     }
 }

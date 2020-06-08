@@ -16,6 +16,6 @@ namespace OnlyJournalPage.Model.Journals
 
         public string GetPagePath() => "/Journal/Article";
 
-        public string GetQueryString() => $"id={journal.Id}";
+        public object GetQueryValue() => new { id = journal.Id };
     }
 }

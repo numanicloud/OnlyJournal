@@ -1,10 +1,10 @@
 ﻿using OnlyJournal.Data.Article;
+using System.Collections.Generic;
 
 namespace OnlyJournal.Data.Habit
 {
 	public interface IHabitRecordRepository
 	{
-		HabitRecord Get(string key);
-		IArticle[] GetAllArticleInfo();
+		IEnumerable<HabitRecord> GetAll();
 	}
 }

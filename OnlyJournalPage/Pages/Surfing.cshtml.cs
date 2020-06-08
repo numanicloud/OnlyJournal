@@ -27,7 +27,7 @@ namespace OnlyJournalPage.Pages
 
         public IActionResult OnGet()
 		{
-			var (page, query) = repository.GetNextPage(context);
+			var (page, query) = repository.GetNextPage();
 			return RedirectToPage(page, query);
 		}
     }

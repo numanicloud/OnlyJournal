@@ -1,5 +1,7 @@
 ﻿using OnlyJournalPage.Data;
+using OnlyJournalPage.Data.Common;
 using OnlyJournalPage.Model.Article;
+using OnlyJournalPage.Model.Common;
 using OnlyJournalPage.Model.Habits;
 using OnlyJournalPage.Model.Journals;
 using OnlyJournalPage.Model.SaveData;
@@ -13,39 +15,49 @@ namespace OnlyJournalPage.Model.Surfing
 {
     public class SurfingRepository : ISurfingRepository
     {
-        private readonly ArticleRepositoryStore repos;
+        private readonly IArticleRepositoryStore repos;
         private readonly ISaveDataRepository save;
+        private readonly IRandomValueSource random;
+        private readonly IContentsContext context;
+        private readonly IEnumerator<IArticleRepository> sequence;
 
-        public SurfingRepository(ArticleRepositoryStore repos, ISaveDataRepository save)
+        public SurfingRepository(IArticleRepositoryStore repos,
+            ISaveDataRepository save,
+            IRandomValueSource random,
+            IContentsContext context)
         {
             this.repos = repos;
             this.save = save;
+            this.random = random;
+            this.context = context;
+            this.sequence = GetArticleRepositories().GetEnumerator();
         }
 
-        public (string path, object queryString) GetNextPage(OnlyJournalContext context)
+        public (string path, object queryString) GetNextPage()
         {
             var surfingSave = save.GetSurfingState();
-            var index = surfingSave.GlobalProgress;
+            var index = surfingSave.GlobalProgress + 1;
 
-            var current = GetArticleRepositories(context).ElementAt(index).GetNextArticle(context);
-            return (current.GetPagePath(), current.GetQueryString());
+            for (int i = 0; i < index; i++)
+            {
+                sequence.MoveNext();
+            }
+            var current = sequence.Current.GetNextArticle(context);
+
+            save.GetSurfingState().GlobalProgress += 1;
+            save.Save();
+
+            return (current.GetPagePath(), current.GetQueryValue());
         }
 
-        private IEnumerable<IArticleRepository> GetArticleRepositories(OnlyJournalContext context)
+        private IEnumerable<IArticleRepository> GetArticleRepositories()
         {
-            var data = save.GetSurfingState();
-            if (!data.RandomSeed.ContainsKey("Surfing"))
-            {
-                data.RandomSeed["Surfing"] = DateTime.Now.GetHashCode();
-                save.Save();
-            }
-            var random = new Random(data.RandomSeed["Surfing"]);
-
             var journalSequence = GetNextJournal().GetEnumerator();
             var habitSequence = GetNextHabit().GetEnumerator();
 
             while (true)
             {
+                // TODO: 繰り返し回数をオプションに
                 for (int i = 0; i < 3; i++)
                 {
                     journalSequence.MoveNext();
