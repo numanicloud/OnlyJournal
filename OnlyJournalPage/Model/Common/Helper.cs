@@ -3,6 +3,7 @@ using OnlyJournalPage.Model.Article;
 using OnlyJournalPage.Model.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,10 +15,13 @@ namespace OnlyJournalPage.Model
         {
             var currentDensity = 0.0f;
             var rand = random.NextFloat(0, densities.Sum());
+            Debug.WriteLine($"random: {densities[0]}, {densities[1]}, {densities[2]}; {rand}");
             for (int i = 0; i < densities.Length; i++)
             {
-                if (currentDensity <= rand && rand < densities[i])
+                Debug.WriteLine($"{currentDensity} <= {rand} < {currentDensity + densities[i]}");
+                if (currentDensity <= rand && rand < currentDensity + densities[i])
                 {
+                    Debug.WriteLine($"result: {i}");
                     return i;
                 }
                 currentDensity += densities[i];

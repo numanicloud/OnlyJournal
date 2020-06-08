@@ -36,7 +36,8 @@ namespace OnlyJournalPage.Model.Surfing
         public (string path, object queryString) GetNextPage()
         {
             var surfingSave = save.GetSurfingState();
-            var index = surfingSave.GlobalProgress + 1;
+            var modulo = 3 * 2 + 1;
+            var index = surfingSave.GlobalProgress % modulo + 1;
 
             for (int i = 0; i < index; i++)
             {
