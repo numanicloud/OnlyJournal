@@ -25,14 +25,19 @@ namespace OnlyJournalPage.Model
 				.FirstOrDefault();
 		}
 
-		private double GetPriority(Data.Todo.Todo x)
+		private double GetPriority(Data.Todo.Todo entity)
 		{
-			var pivot = x.BeginTime ?? x.EndTime ?? DateTime.MinValue;
-			var sub = (pivot - DateTime.Now).TotalMilliseconds;
+			double nearnessFactor = 0.15;   // 前後1時間の範囲では0.15以上の優先度を持つ
+			var now = DateTime.Now;
 
-			// 負の数ならタイムオーバーなので、優先度は最小
-			// さもなくば、subが小さいほど高優先度
-			return sub < 0 ? double.MinValue : -sub;
+			if (entity.PriorTimeCenter is null)
+			{
+				entity.PriorTimeCenter = entity.PriorTimeBegin + (entity.PriorTimeEnd - entity.PriorTimeBegin) / 2;
+			}
+
+			var nearness = (now - entity.PriorTimeCenter).Value.TotalSeconds / 60.0;
+			var insideness = entity.PriorTimeBegin < now && now < entity.PriorTimeEnd ? 1 : 0;
+			return insideness + 1 / nearness * nearnessFactor;
 		}
 	}
 }

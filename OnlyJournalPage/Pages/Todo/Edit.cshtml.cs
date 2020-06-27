@@ -48,6 +48,7 @@ namespace OnlyJournalPage.Pages.Todo
                 return Page();
             }
 
+            Todo.PriorTimeCenter = null;
             _context.Attach(Todo).State = EntityState.Modified;
 
             try

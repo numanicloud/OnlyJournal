@@ -48,7 +48,6 @@ namespace OnlyJournalPage
 			//*/
             services.AddDbContext<OnlyJournalContext>();
 
-            services.AddSingleton<ArticleRepository>();
             services.Configure<ArticleOption>(Configuration);
 
             services.AddSingleton<ISaveDataRepository, SaveDataRepository>();

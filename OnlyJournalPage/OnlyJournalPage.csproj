@@ -12,6 +12,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200608072810_OnlyJournalContext.cs" />
     <Compile Remove="Migrations\20200608072810_OnlyJournalContext.Designer.cs" />
+    <Compile Remove="Migrations\20200627050745_TodoRenewal.cs" />
+    <Compile Remove="Migrations\20200627050745_TodoRenewal.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

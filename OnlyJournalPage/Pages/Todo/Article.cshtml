@@ -11,15 +11,7 @@
             @foreach (var item in Model.Data)
             {
                 <li>
-                    @item.Title
-                    @if (item.BeginTime != null || item.EndTime != null)
-                    {
-                        <text>[</text>
-                        @(item.BeginTime?.ToString() ?? "*")
-                        <text>,</text>
-                        @(item.EndTime?.ToString() ?? "*")
-                        <text>]</text>
-                    }
+                    @item.Title <mark>@item.PriorTimeBegin ~ @item.PriorTimeEnd</mark>
                 </li>
             }
         </ul>

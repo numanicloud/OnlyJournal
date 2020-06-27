@@ -17,13 +17,13 @@
                 @Html.DisplayNameFor(model => model.Todo[0].Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Todo[0].BeginTime)
+                @Html.DisplayNameFor(model => model.Todo[0].Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Todo[0].EndTime)
+                @Html.DisplayNameFor(model => model.Todo[0].PriorTimeBegin)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Todo[0].IsFinishByEndTime)
+                @Html.DisplayNameFor(model => model.Todo[0].PriorTimeEnd)
             </th>
             <th></th>
         </tr>
@@ -35,13 +35,13 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BeginTime)
+                @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
+                @Html.DisplayFor(modelItem => item.PriorTimeBegin)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsFinishByEndTime)
+                @Html.DisplayFor(modelItem => item.PriorTimeEnd)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
