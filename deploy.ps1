@@ -1,0 +1,1 @@
+scp ./publish.zip onlyjournal:~/Management/

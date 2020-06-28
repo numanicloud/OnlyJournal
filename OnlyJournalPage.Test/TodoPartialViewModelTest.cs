@@ -49,7 +49,6 @@ namespace OnlyJournalPage.Test
 			var subject = new TodoPartialViewModel(new MockContext());
 			var now = DateTime.Now;
 
-
 			var todo1 = new Todo()
 			{
 				Id = 0,
