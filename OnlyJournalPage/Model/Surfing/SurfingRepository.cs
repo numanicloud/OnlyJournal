@@ -1,9 +1,11 @@
-﻿using OnlyJournalPage.Data;
+﻿using Microsoft.Extensions.Options;
+using OnlyJournalPage.Data;
 using OnlyJournalPage.Data.Common;
 using OnlyJournalPage.Model.Article;
 using OnlyJournalPage.Model.Common;
 using OnlyJournalPage.Model.Habits;
 using OnlyJournalPage.Model.Journals;
+using OnlyJournalPage.Model.Options;
 using OnlyJournalPage.Model.SaveData;
 using OnlyJournalPage.Model.Todos;
 using System;
@@ -19,17 +21,20 @@ namespace OnlyJournalPage.Model.Surfing
 		private readonly ISaveDataRepository save;
 		private readonly IRandomValueSource random;
 		private readonly IContentsContext context;
+		private readonly IOptionsMonitor<ArticleOption> option;
 		private readonly IEnumerator<IArticleRepository> sequence;
 
 		public SurfingRepository(IArticleRepositoryStore repos,
 			ISaveDataRepository save,
 			IRandomValueSource random,
-			IContentsContext context)
+			IContentsContext context,
+			IOptionsMonitor<ArticleOption> option)
 		{
 			this.repos = repos;
 			this.save = save;
 			this.random = random;
 			this.context = context;
+			this.option = option;
 			this.sequence = GetArticleRepositories().GetEnumerator();
 		}
 
@@ -62,13 +67,12 @@ namespace OnlyJournalPage.Model.Surfing
 
 			while (true)
 			{
-				// TODO: 繰り返し回数をオプションに
-				for (int i = 0; i < 3; i++)
+				for (int i = 0; i < option.CurrentValue.HabitAndJournalRepeatCount; i++)
 				{
 					journalSequence.MoveNext();
 					yield return journalSequence.Current;
 
-					for (int j = 0; j < 2; j++)
+					for (int j = 0; j < option.CurrentValue.HabitRepeatCount; j++)
 					{
 						habitSequence.MoveNext();
 						yield return habitSequence.Current;

@@ -21,7 +21,7 @@ namespace OnlyJournalPage.Model.Habits
         protected override IEnumerable<HabitArticle> CreateContents(IContentsContext context)
         {
             return context.Habits.GetAll().Where(x => !x.IsCompleted)
-                .OrderBy(x => Random.Next())
+                //.OrderBy(x => Random.Next())
                 .Select(x => new HabitArticle(x));
         }
 

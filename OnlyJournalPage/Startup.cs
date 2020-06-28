@@ -47,6 +47,7 @@ namespace OnlyJournalPage
 		            options.UseSqlServer(Configuration.GetConnectionString("OnlyJournalContext")));
 			//*/
             services.AddDbContext<OnlyJournalContext>();
+            services.AddScoped<IContentsContext, OnlyJournalContext>();
 
             services.Configure<ArticleOption>(Configuration);
 
@@ -61,7 +62,6 @@ namespace OnlyJournalPage
             services.AddScoped<IArticleRepositoryStore, ArticleRepositoryStore>();
             services.AddScoped<ISurfingRepository, SurfingRepository>();
             services.AddSingleton<IRandomValueSource, SystemRandomValueSource>();
-            services.AddScoped<IContentsContext, OnlyJournalContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

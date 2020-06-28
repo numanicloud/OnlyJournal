@@ -50,7 +50,7 @@ namespace OnlyJournalPage.Model.Article
             var index = surfingSave.Progresses[GetKey()] % count;
             var next = contents.ElementAt(index);
 
-            surfingSave.Progresses[GetKey()] = index + 1;
+            surfingSave.Progresses[GetKey()] = index > int.MaxValue / 2 ? 0 : index + 1;
             _save.Save();
 
             return next;

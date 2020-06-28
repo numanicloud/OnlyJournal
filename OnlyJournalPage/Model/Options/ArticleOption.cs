@@ -10,8 +10,7 @@ namespace OnlyJournalPage.Model.Options
         public int JournalStaySeconds { get; set; } = 24;
         public int HabitStaySeconds { get; set; } = 12;
         public int TodoStaySeconds { get; set; } = 24;
-        public int JournalWeight { get; set; } = 4;
-        public int HabitWeight { get; set; } = 5;
-        public int TodoWeight { get; set; } = 1;
-    }
+        public int HabitRepeatCount { get; set; } = 3;
+        public int HabitAndJournalRepeatCount { get; set; } = 3;
+	}
 }

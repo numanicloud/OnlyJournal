@@ -1,5 +1,6 @@
 using OnlyJournalPage.Data.Surfing;
 using OnlyJournalPage.Model.Common;
+using OnlyJournalPage.Model.Options;
 using OnlyJournalPage.Model.SaveData;
 using OnlyJournalPage.Model.Surfing;
 using System;
@@ -61,7 +62,8 @@ namespace OnlyJournalPage.Test
                 var subject = new SurfingRepository(repoStore,
                     save,
                     new ConstantRandomValueSource(0),
-                    new MockContext());
+                    new MockContext(),
+                    null);
                 var saveData = save.GetSurfingState();
 
                 output.WriteLine($"globalProgress: {saveData.GlobalProgress}");
